@@ -25,7 +25,7 @@ Diffuse Shading
 
 Additional:
 ==========
-I built a custom scene customization engine, which parses through custom script files to set up light, object and camera locations/materials, etc.
+I built a custom scene scripting language, which parses through custom script files to set up light, object and camera locations, object materials, etc.
 
 Practiced using many design patterns (Singletons, Factories, etc.) in order to make the app easy to expand and manage.
 
