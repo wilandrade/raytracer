@@ -1,0 +1,57 @@
+Camera
+{
+	worldUp 0.0 1.0 0.0
+	eye 0.0 4.0 -8.0
+	lookAt 0.0 2.0 0.0
+	fov 39.0
+	fstop 100.0
+}
+
+Plane
+{
+	normal 0.0 1.0 0.0
+	dValue 0.0
+	material diffuse
+}
+
+Sphere
+{
+	position 0.0 2.0 0.0
+	radius 1.5
+	material diffuse
+}
+
+Sphere
+{
+	position -5.0 3.0 5.0
+	radius 2.0
+	material diffuse
+}
+
+PointLight
+{
+    intensity 0.4
+    position -6.0 4.0 -2.0
+    color 0.7 0.0 0.9  // Neon purple
+}
+
+PointLight
+{
+    intensity 0.3
+    position 4.0 3.0 -3.0
+    color 0.0 0.6 0.8  // Cyan
+}
+
+PointLight
+{
+    intensity 0.6
+    position -6.0 4.0 7.0
+    color 1.0 0.2 0.8  // Hot pink rim
+}
+
+PointLight
+{
+    intensity 0.15
+    position 2.0 8.0 4.0
+    color 0.2 0.2 0.2  // Dim fill light
+}

@@ -7,7 +7,7 @@ int main()
 {
 	Scene* scene = new Scene();
 
-	scene->LoadScene("SceneScript.txt");
+	scene->LoadScene("../src/SceneScript.txt"); //assumes the scene file is in the src directory
 
 	scene->SetBackgroundColor(Color3(0.0, 0.0, 0.0));
 	scene->mAmbientLight = Color3( 0.0, 0.0, 0.0 ); //temporary flat shaded color for objects in the scene

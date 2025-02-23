@@ -7,7 +7,14 @@
 
 Color3 DiffuseMaterial::GetColor(const HitRecord& hit)
 {
-	return _Diffuse(hit) + TRACER->GetCurrentScene()->mAmbientLight;
+	Color3 color = _Diffuse(hit) + TRACER->GetCurrentScene()->mAmbientLight;
+    
+    // Clamp final color
+    color.x = std::min(1.0, std::max(0.0, color.x));
+    color.y = std::min(1.0, std::max(0.0, color.y));
+    color.z = std::min(1.0, std::max(0.0, color.z));
+    
+    return color;
 }
 
 Color3 DiffuseMaterial::_Diffuse(const HitRecord& hit)
@@ -24,14 +31,24 @@ Color3 DiffuseMaterial::_Diffuse(const HitRecord& hit)
 		diff = hit.mNormal.Dot(lightRec.mIncidentVector);
 		if(diff > 0)//if light is not behind hitPoint
 		{
-			diffuseColor += lightRec.mLightColor * lightRec.mLightIntensity * diff;// * lightRec.mOcclusion; //add light attribution
-			//diffuseColor = Color3(lightRec.mOcclusion, lightRec.mOcclusion, lightRec.mOcclusion); //occlusion pass test
+			// Apply both diffuse and shadow terms
+			Color3 contribution = lightRec.mLightColor * lightRec.mLightIntensity * diff * lightRec.mOcclusion;
+			
+			// Clamp the contribution
+			contribution.x = std::min(1.0, std::max(0.0, contribution.x));
+			contribution.y = std::min(1.0, std::max(0.0, contribution.y));
+			contribution.z = std::min(1.0, std::max(0.0, contribution.z));
+			
+			diffuseColor += contribution;
 		}
 	}
+	
+	// Clamp final color
+	diffuseColor.x = std::min(1.0, std::max(0.0, diffuseColor.x));
+	diffuseColor.y = std::min(1.0, std::max(0.0, diffuseColor.y));
+	diffuseColor.z = std::min(1.0, std::max(0.0, diffuseColor.z));
  
 	return diffuseColor;
-
-
 }
 
 void DiffuseMaterial::PrintType()

@@ -19,11 +19,11 @@ LightRecord PointLight::GetLightInfo(const HitRecord& hit)
 
 
 	int totalOccludedSamples = 0; //total number of samples that were occluded
-	int totalSamples = 1; // total number of samples that will be traced
+	int totalSamples = 4;  // Increased from 1 to get soft shadows
 	Vector3 sampleOrigin; // location that we are sampling from
 	Vector3 hitToSample; // vector from the hit point to the point we're sampling around the light
 	double distToSample; // distance from hit point to sampleOrigin
-	double sampleDiskRadius = 1.5; //samples will be taken from within a disk area. This is the disk's radius
+	double sampleDiskRadius = 0.30; //samples will be taken from within a disk area. This is the disk's radius
 	double tempRand = 0; //random number temp
 	double precision = 10.0f;
 

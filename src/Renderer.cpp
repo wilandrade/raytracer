@@ -13,20 +13,18 @@ void Renderer::Render(Scene* scene, int w, int h)
 	int totalPixels = w * h;				
 	Color3 * pixelData = new Color3[totalPixels];	//allocate memory for pixel data
 
-	int totalSamples = 64; //total amount of samples used for anti-aliasing
+	int totalSamples = 16; //total amount of samples used for anti-aliasing
 	double tempRand = 0; //random number holder
 	double precision = 10.0; //precision of random number
 	//start ray casting by iterating through each pixel on the screen
 	int curPixel = 0;
 	for(int y = 0; y < h; y++)
 	{
-		//double ny = (double)y/h;
-		std::cout << ".";
 		
 		for(int x = 0; x < w; x++)
 		{
-			//double nx = (double)x/w;
-			//pixelData[curPixel] = TRACER->Trace(nx, ny);
+			
+			pixelData[curPixel] = Color3(0,0,0); // Initialize to black before accumulating
 			
 			for(int ss = 0; ss < totalSamples; ss++)
 			{
@@ -41,16 +39,16 @@ void Renderer::Render(Scene* scene, int w, int h)
 				pixelData[curPixel] += TRACER->Trace(ssnx, ssny)/(double)totalSamples; //assign color values
 			}
 			
+			
 			curPixel++;
 
-			//std::cout << (y*x)/totalSamples << "% done.\n";
 		}
 
 	}
 
 
 	//save image
-	std::string fileName = "test.raw";
+	std::string fileName = "render.raw";
 	WriteToFile(fileName, pixelData, w, h);
 }
 
@@ -77,11 +75,11 @@ bool Renderer::WriteToFile(std::string fileName, Color3 *pixelData, int w, int h
         cval = (unsigned char)(pixelData[curPixel].x * 255);
         myfile.write((char *)&cval, 1);
 
-        //write blue pixel
+        //write green pixel
         cval = (unsigned char)(pixelData[curPixel].y * 255);
         myfile.write((char *)&cval, 1);
 
-        //write green pixel
+        //write blue pixel
         cval = (unsigned char)(pixelData[curPixel].z * 255);
         myfile.write((char *)&cval, 1);
         //end -->[PE]

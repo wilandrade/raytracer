@@ -14,9 +14,9 @@ class Tracer
 		Scene* mCurScene;
 	
 	public:
-		const Color3& Trace(double nx, double ny);
-		const Color3& Trace(const Vector3& eye, const Vector3& view);
-		const Color3& ReflectionTrace(const HitRecord& hit, const Vector3& reflectionVec);
+		Color3 Trace(double nx, double ny);
+		Color3 Trace(const Vector3& eye, const Vector3& view);
+		Color3 ReflectionTrace(const HitRecord& hit, const Vector3& reflectionVec);
 		bool ShadowTrace(const Vector3& origin, const Vector3& direction, double maxDist);
 
 

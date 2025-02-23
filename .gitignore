@@ -1,2 +1,42 @@
-*.svn*
+# Build outputs
+build/
+*.o
+*.exe
+test.raw      # The output image from Renderer.cpp
+
+# IDE files
+.vs/
+*.user
+
+# OS specific
 .DS_Store
+Thumbs.db
+
+# Build outputs
+*.dll
+*.so
+*.dylib
+*.lib
+*.pdb
+*.ilk
+
+# IDE specific
+*.suo
+*.sdf
+*.opensdf
+*.db
+*.opendb
+
+# OS generated files
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Backup files
+*~
+*.bak
+*.swp
+
+# SVN
+*.svn*

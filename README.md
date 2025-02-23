@@ -23,10 +23,45 @@ Diffuse Shading
 ![](https://github.com/wilandrade/raytracer/blob/master/Renders/4-FirstDiffuseRender-Success.jpg)
 
 
-Additional:
-==========
-I built a custom scene scripting language, which parses through custom script files to set up light, object and camera locations, object materials, etc.
+Additional Features
+==================
+* Custom Scene Description Language
+  - Simple tokenizer/parser
+  - Declarative syntax for scene setup
+  - Supports camera, lights, materials, and primitives
+  - Easy to extend with new object types
 
-Practiced using many design patterns (Singletons, Factories, etc.) in order to make the app easy to expand and manage.
+* Software Architecture
+  - Singleton pattern for global systems
+  - Factory pattern for material and primitive creation
+  - Separation of concerns between rendering, tracing, and scene management
+  
 
+Building the Project
+-------------------
+Create and enter the build directory:
+```mkdir build```
+```cd build```
+Generate build files with CMake:
+```cmake ..```
+Build the project:
+```cmake --build .```
+Run the raytracer:
+```./raytracer```
+This will generate a render.raw file in the build directory.
+
+Viewing the Output
+-----------------
+The raytracer outputs raw RGB data that needs to be converted for viewing. I created a Python script called raw_visualizer.py in the tools folder in the project root
+
+To view the rendered image make sure you have python3 installed and then run the script:
+From the build folder:
+```python3 ../tools/raw_visualizer.py```
+
+
+Requirements
+-----------
+CMake 3.10 or higher
+C++ compiler (gcc, clang, or msvc)
+Python 3.x with PIL and numpy packages (only for the raw_visualizer.py script)
 

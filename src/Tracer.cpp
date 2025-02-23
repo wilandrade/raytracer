@@ -19,7 +19,7 @@ const Scene* Tracer::GetCurrentScene()const
 
 //This function changes the request of the trace to the way it really works.
 //It converts the trace from pixel coordinates to normalized coordinates
-const Color3& Tracer::Trace(double nx, double ny)
+Color3 Tracer::Trace(double nx, double ny)
 {
 	Color3 theColor = Vector3(0,0,0); //color found by the trace
 
@@ -38,8 +38,8 @@ const Color3& Tracer::Trace(double nx, double ny)
 
 	double tempRand = 0; //random number holder
 	double precision = 10.0;//magic number
-	double lensRadius = lookAtVec.GetLength() / (2 * mCurScene->GetCamera()->m_FSTOP); //samples will be taken from within a disk area. This is the disk's radius
-	int totalSamples = 1;
+	double lensRadius = lookAtVec.GetLength() / (2 * mCurScene->GetCamera()->m_FSTOP);
+	int totalSamples = 1;  // Increase samples for smoother DOF
 	Vector3 theEye; //camera pos
 	
 	
@@ -49,15 +49,11 @@ const Color3& Tracer::Trace(double nx, double ny)
 		
 		theEye = mCurScene->GetCamera()->GetEye();
 		
-		//TODO: USE MORE ACCURATE RANDOM NUMBER (RAND() / RAND_MAX)
-		//x component
-		tempRand = (rand() % ((int)precision*2)) - precision;
-		tempRand /= precision;
+		tempRand = (double)rand() / RAND_MAX * 2.0 - 1.0; 
 		theEye +=  uVec * lensRadius * tempRand;
 
 		//y component
-		tempRand = (rand() % ((int)precision*2)) - precision;
-		tempRand /= precision; //normalize random number
+		tempRand = (double)rand() / RAND_MAX * 2.0 - 1.0; 
 		theEye += vVec * lensRadius * tempRand;
 		
 		lookAtVec = mCurScene->GetCamera()->GetLookAt() - theEye; //get the new lookAt with the jittered eye position
@@ -84,13 +80,25 @@ const Color3& Tracer::Trace(double nx, double ny)
 		theView = S - theEye;
 		theView.NormalizeVector();
 
-		theColor += Trace(theEye, theView)/(double)totalSamples;
+		Color3 sampleColor = Trace(theEye, theView)/(double)totalSamples;
+		
+		// Clamp the sample color before adding
+		sampleColor.x = std::min(1.0, std::max(0.0, sampleColor.x));
+		sampleColor.y = std::min(1.0, std::max(0.0, sampleColor.y));
+		sampleColor.z = std::min(1.0, std::max(0.0, sampleColor.z));
+		
+		theColor += sampleColor;
 	}
+
+	// Clamp final accumulated color
+	theColor.x = std::min(1.0, std::max(0.0, theColor.x));
+	theColor.y = std::min(1.0, std::max(0.0, theColor.y));
+	theColor.z = std::min(1.0, std::max(0.0, theColor.z));
 
 	return theColor;
 }
 
-const Color3& Tracer::Trace(const Vector3& eye, const Vector3& view)
+Color3 Tracer::Trace(const Vector3& eye, const Vector3& view)
 {
 	
 	std::list<Primitive*> objectList = mCurScene->GetObjectList();
@@ -129,7 +137,7 @@ const Color3& Tracer::Trace(const Vector3& eye, const Vector3& view)
 	
 }
 
-const Color3& Tracer::ReflectionTrace(const HitRecord& hit, const Vector3& reflectionVec)
+Color3 Tracer::ReflectionTrace(const HitRecord& hit, const Vector3& reflectionVec)
 {
 	
 	std::list<Primitive*> objectList = mCurScene->GetObjectList();
@@ -173,7 +181,7 @@ bool Tracer::ShadowTrace(const Vector3& rayOrigin, const Vector3& rayDirection, 
 	std::list<Primitive*> objectList = mCurScene->GetObjectList();
 	std::list<Primitive*>::iterator iter;
 	
-	double bias = 0000.3; //the closest distance that was hit by the ray
+	double bias = 0.001; // Was 0000.3 which is just 0.3 - let's use a smaller bias
 
 	
 	//Check each object and see if it intersects with the ray
