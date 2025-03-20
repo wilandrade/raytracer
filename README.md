@@ -40,14 +40,23 @@ Additional Features
 Building the Project
 -------------------
 Create and enter the build directory:
+
 ```mkdir build```
+
 ```cd build```
+
 Generate build files with CMake:
+
 ```cmake ..```
+
 Build the project:
+
 ```cmake --build .```
+
 Run the raytracer:
+
 ```./raytracer```
+
 This will generate a render.raw file in the build directory.
 
 Viewing the Output
@@ -56,6 +65,7 @@ The raytracer outputs raw RGB data that needs to be converted for viewing. I cre
 
 To view the rendered image make sure you have python3 installed and then run the script:
 From the build folder:
+
 ```python3 ../tools/raw_visualizer.py```
 
 
